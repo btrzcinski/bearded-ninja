@@ -25,7 +25,7 @@ void free_student(student** s)
 	*s = NULL;
 }
 
-inline void swap_students(student** one, student** two)
+void swap_students(student** one, student** two)
 {
 	student* temp = *two;
 	*two = *one;
