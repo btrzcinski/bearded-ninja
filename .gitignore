@@ -27,7 +27,8 @@
 *.out
 *.app
 
-# Specific project executables with no extension (UNIX)
-countsort
-countsortcpp
-fibonacci
+# CMake stuff
+CMake*
+!CMakeLists.txt
+Makefile
+*.make
