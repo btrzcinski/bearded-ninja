@@ -28,7 +28,4 @@
 *.app
 
 # CMake stuff
-CMake*
-!CMakeLists.txt
-Makefile
-*.make
+/build/
