@@ -29,3 +29,9 @@
 
 # CMake stuff
 /build/
+
+# WebRadio artifacts
+webradio/bin
+webradio/logs
+webradio/*.pid
+
