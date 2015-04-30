@@ -18,6 +18,6 @@ Github chose it. :)
 - countsortcpp - an implementation of the count sort algorithm in C++, making as much use of rvalue/move semantics as possible
 - fibonacci - a Fibonacci series generator as a C++ template
 
-### Build on their own
+### Standalone
 - webradio - an ICY stream reader that requests metadata, strips it out of the stream and logs it, and passes the remainder out to a FIFO, for use by a decoder/player like GStreamer
 
