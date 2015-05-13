@@ -33,7 +33,7 @@ unsigned countsort(std::vector<student>& c)
 		{
 			auto dest = c[i].id;
 			std::swap(c[i], c[dest]);
-			swaps++;
+			++swaps;
 		}
 	}
 	return swaps;
@@ -42,7 +42,7 @@ unsigned countsort(std::vector<student>& c)
 void shuffle(std::vector<student>& c)
 {
 	static auto rando = std::minstd_rand{std::random_device{}()};
-	for(auto i = 0U; i < 50; i++)
+	for(auto i = 0U; i < 50; ++i)
 	{
 		std::swap(c[i],c[rando() % 50]);
 	}
@@ -51,7 +51,7 @@ void shuffle(std::vector<student>& c)
 int main(int argc, char *argv[])
 {
 	auto c = std::vector<student>{};
-	for(auto i = 0U; i < 50; i++)
+	for(auto i = 0U; i < 50; ++i)
 	{
 		auto name = std::wstring{L"Student"} + std::to_wstring(i);
 		c.push_back(student{i, name});
