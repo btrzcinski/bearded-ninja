@@ -39,7 +39,8 @@ void print_student(student* s)
 
 void print_students(student** c, int c_size)
 {
-	for(int i = 0; i < c_size; i++)
+    int i;
+	for(i = 0; i < c_size; i++)
 	{
 		print_student(c[i]);
 	}
@@ -50,7 +51,8 @@ void shuffle_students(student** c, int c_size)
 {
 	srand(time(NULL));
 
-	for(int i = 0; i < c_size; i++)
+    int i;
+	for(i = 0; i < c_size; i++)
 	{
 		int dest = rand() % 50;
 		swap_students(&c[i], &c[dest]);
@@ -60,7 +62,8 @@ void shuffle_students(student** c, int c_size)
 unsigned countsort_students(student** c, int c_size)
 {
 	unsigned swaps = 0;
-	for(int i = 0; i < c_size; i++)
+    int i;
+	for(i = 0; i < c_size; i++)
 	{
 		while(c[i]->id != i)
 		{
@@ -76,7 +79,8 @@ unsigned countsort_students(student** c, int c_size)
 int main(int argc, char **argv)
 {
 	student* c[50];
-	for(int i = 0; i < 50; i++)
+    int i;
+	for(i = 0; i < 50; i++)
 	{
 		wchar_t name[10];
 		swprintf(name, 10, L"Student%d", i);
@@ -89,7 +93,7 @@ int main(int argc, char **argv)
 	countsort_students(c, 50);
 	print_students(c, 50);
 
-	for(int i = 0; i < 50; i++)
+	for(i = 0; i < 50; i++)
 	{
 		free_student(&c[i]);
 	}

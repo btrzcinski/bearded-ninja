@@ -1,8 +1,10 @@
 #!/bin/bash
 
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
 if [[ "$1" = "" ]]; then
     echo Using fifo = 977fifo
-    FIFO_PATH=977fifo
+    FIFO_PATH=$DIR/977fifo
 else
     FIFO_PATH=$1
 fi
@@ -16,15 +18,12 @@ if [[ ! -p $FIFO_PATH ]]; then
     exit
 fi
 
-if [[ ! -d logs ]]; then
-    mkdir logs
+if [[ ! -d $DIR/logs ]]; then
+    mkdir $DIR/logs
 fi
 
-echo Making...
-make >/dev/null
-
-bin/webradio $FIFO_PATH >logs/webradio.log 2>&1 &
-echo $! > webradio.pid
+$DIR/../build/webradio/webradio.out $FIFO_PATH >$DIR/logs/webradio.log 2>&1 &
+echo $! > $DIR/webradio.pid
 gst-launch filesrc location=$FIFO_PATH ! aacparse ! faad ! audioconvert ! alsasink >logs/gstreamer.log 2>&1 &
 
 echo Started
