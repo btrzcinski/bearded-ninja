@@ -13,3 +13,11 @@ rm $DIR/webradio.pid
 echo Stopping WebRadio [ PID = $WEBRADIOPID ]
 kill $WEBRADIOPID
 
+GSTREAMERPID=`cat $DIR/gstreamer.pid`
+rm $DIR/gstreamer.pid
+
+echo Waiting for GStreamer to starve [ PID = $GSTREAMERPID ]
+while [[ `ps --no-headers $GSTREAMERPID` ]]; do
+    sleep 1
+done
+

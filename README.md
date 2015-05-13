@@ -11,6 +11,13 @@ out to solve a task that proved non-trivial for some reason.
 
 Github chose it. :)
 
+### I'm impatient!
+
+* Install CMake >= 3.1.3
+* In the root, run build.sh
+* If that works, run 'cd build && make'
+* Fix any errors that result from missing dependencies
+
 ## Table of Contents
 
 ### Build with CMake

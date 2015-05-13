@@ -196,7 +196,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            g_debug("wrote %d bytes to fifo", bytes_written);
+            g_debug("wrote %lu bytes to fifo", bytes_written);
             g_assert(bytes_written == bytes_read);
         }
 
@@ -244,7 +244,10 @@ int main(int argc, char **argv)
             
             g_assert(bytes_read == meta_size);
             buffer[bytes_read] = '\0';
-            g_message("metadata: %s", (char*)buffer);
+            GTimeVal current_time;
+            g_get_current_time(&current_time);
+            gchar *current_time_str = g_time_val_to_iso8601(&current_time);
+            g_message("(%s) metadata: %s", current_time_str, buffer);
         }  
     }
 

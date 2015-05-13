@@ -25,6 +25,7 @@ fi
 $DIR/../build/webradio/webradio.out $FIFO_PATH >$DIR/logs/webradio.log 2>&1 &
 echo $! > $DIR/webradio.pid
 gst-launch filesrc location=$FIFO_PATH ! aacparse ! faad ! audioconvert ! alsasink >logs/gstreamer.log 2>&1 &
+echo $! > $DIR/gstreamer.pid
 
 echo Started
 
