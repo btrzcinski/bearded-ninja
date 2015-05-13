@@ -12,7 +12,7 @@ bin/%.o: src/%.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 bin/webradio: bin/webradio.o
-	$(CC) $(LDFLAGS) -o $@ $^
+	$(CC) $< $(LDFLAGS) -o $@
 
 clean:
 	rm -rf bin logs 
