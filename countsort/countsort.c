@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <wchar.h>
+#include <string.h>
 #include <time.h>
 
 typedef struct
 {
 	unsigned id;
-	wchar_t *name;
+	char *name;
 } student;
 
 void create_student(
-	unsigned id, wchar_t *name, student** s)
+	unsigned id, char *name, student** s)
 {
 	*s = malloc(sizeof(student));
 	(*s)->id = id;
-	(*s)->name = malloc(sizeof(wchar_t) * (wcslen(name)+1));
-	wcscpy((*s)->name, name);
+	(*s)->name = malloc(sizeof(char) * (strlen(name)+1));
+	strcpy((*s)->name, name);
 }
 
 void free_student(student** s)
@@ -34,7 +34,7 @@ void swap_students(student** one, student** two)
 
 void print_student(student* s)
 {
-	wprintf(L"id = %d, name = %ls\n", s->id, s->name);
+	printf("id = %d, name = %s\n", s->id, s->name);
 }
 
 void print_students(student** c, int c_size)
@@ -44,7 +44,7 @@ void print_students(student** c, int c_size)
 	{
 		print_student(c[i]);
 	}
-	wprintf(L"\n");
+	printf("\n");
 }
 
 void shuffle_students(student** c, int c_size)
@@ -82,8 +82,8 @@ int main(int argc, char **argv)
     int i;
 	for(i = 0; i < 50; i++)
 	{
-		wchar_t name[10];
-		swprintf(name, 10, L"Student%d", i);
+		char name[10];
+		sprintf(name, "Student%d", i);
 		create_student(i, name, &c[i]);
 	}
 
