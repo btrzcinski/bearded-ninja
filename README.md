@@ -13,8 +13,8 @@ Github chose it. :)
 
 #### CMake-based Projects
 * Install CMake >= 3.1.3
-* In the root, run `build.sh`
-* If that works, run `cd build && make`
+* In the root, run `cmake .`
+* If that works, run `make`
 * Fix any errors that result from missing dependencies
 
 #### Other Projects
