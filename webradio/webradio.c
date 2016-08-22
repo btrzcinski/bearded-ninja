@@ -28,6 +28,15 @@ void header_printer(const char *name,
     g_debug("response header > %s: %s", name, value);
 }
 
+/* Override the log handler for debug messages so they go to stderr too */
+void debug_log_handler(const gchar *log_domain,
+    GLogLevelFlags log_level,
+    const gchar *message,
+    gpointer user_data)
+{
+    fprintf(stderr, "** Debug: %s\n", message);
+}
+
 static bool exit_requested = false;
 
 void signal_handler(int sig)
@@ -55,6 +64,9 @@ int main(int argc, char **argv)
         perror("sigaction");
         exit(1);
     }
+
+    g_log_set_handler(NULL, G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG | G_LOG_FLAG_RECURSION,
+        debug_log_handler, NULL);
 
     GError *error = NULL;
 
