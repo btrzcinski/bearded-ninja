@@ -1,6 +1,5 @@
 bin
 logs
 *.pid
-977fifo
 *.swp
 
