@@ -1,9 +1,17 @@
 # WebRadio
 
-On Debian, make sure you have GStreamer installed, especially these packages:
+## Debian
+
+Make sure you have these packages installed:
 
 * gstreamer1.0-alsa
 * gstreamer1.0-tools
+* gst-plugins-bad1.0
 
-As well as (most likely) the 'bad' and 'ugly' plugin packages.
+## Fedora
+
+Make sure you have these packages installed:
+
+* gstreamer1
+* gstreamer1-plugins-bad-freeworld
 
