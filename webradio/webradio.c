@@ -15,48 +15,17 @@
 #include <stdio.h>
 #include <strings.h>
 
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include <signal.h>
 
 #include <libsoup/soup.h>
 #include <glib-object.h>
 #include <gio/gio.h>
+#include <gio/gunixoutputstream.h>
 
 void header_printer(const char *name,
         const char *value, gpointer user_data)
 {
     g_debug("response header > %s: %s", name, value);
-}
-
-bool is_valid_fifo(char *fifo_path)
-{
-    struct stat fifo_stat;
-    int status;
-
-    /* can we write to it/does it exist? */
-    status = access(fifo_path, W_OK);
-    if(status != 0)
-    {
-        return false;
-    }
-
-    status = stat(fifo_path, &fifo_stat);
-    if(status != 0)
-    {
-        perror("stat");
-        return false;
-    }
-
-    /* is it a fifo? */
-    if(!S_ISFIFO(fifo_stat.st_mode))
-    {
-        return false;
-    }
-
-    return true;
 }
 
 static bool exit_requested = false;
@@ -87,34 +56,17 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    /* get the name of our FIFO */
-    if(argc < 2)
-    {
-        printf("Usage: %s [fifo-path]\n", argv[0]);
-        exit(1);
-    }
-
-    char *fifo_path = argv[1];
-    if(!is_valid_fifo(fifo_path))
-    {
-        printf("FIFO '%s' does not exist, is not a FIFO, or I can't open it\n", fifo_path);
-        exit(1);
-    }
-
-    GFile *fifo_file = g_file_new_for_path(fifo_path);
-    g_object_ref_sink(fifo_file);
-    
     GError *error = NULL;
 
-    GFileOutputStream *fifo_stream;
-    g_debug("opening fifo");
-    fifo_stream = g_file_append_to(fifo_file, G_FILE_CREATE_NONE, NULL, &error);
-    if(fifo_stream == NULL)
+    GOutputStream *stdout_stream; 
+    g_debug("opening stdout");
+    stdout_stream = g_unix_output_stream_new(1, FALSE);
+    if(stdout_stream == NULL)
     {
-        g_critical("couldn't open fifo for appending: %s", error->message);
+        g_critical("couldn't open stdout: %s", error->message);
         exit(1);
     }
-    g_object_ref_sink(fifo_stream);
+    g_object_ref_sink(stdout_stream);
 
     SoupSession *session;
     session = soup_session_new();
@@ -179,10 +131,10 @@ int main(int argc, char **argv)
             break;
         }
 
-        /* write the data we got to the output fifo_stream */
+        /* write the data we got to the output stdout_stream */
         gsize bytes_written;
         gboolean io_result;
-        io_result = g_output_stream_write_all(G_OUTPUT_STREAM(fifo_stream),
+        io_result = g_output_stream_write_all(stdout_stream,
                 buffer,
                 bytes_read,
                 &bytes_written,
@@ -190,13 +142,13 @@ int main(int argc, char **argv)
                 &error);
         if(!io_result)
         {
-            g_critical("Could not write to fifo: %s", error->message);
+            g_critical("Could not write to stdout: %s", error->message);
             g_error_free(error);
             break;
         }
         else
         {
-            g_debug("wrote %lu bytes to fifo", bytes_written);
+            g_debug("wrote %lu bytes to stdout", bytes_written);
             g_assert(bytes_written == bytes_read);
         }
 
@@ -257,8 +209,7 @@ int main(int argc, char **argv)
     g_object_unref(stream);
     g_object_unref(message);
     g_object_unref(session);
-    g_object_unref(fifo_stream);
-    g_object_unref(fifo_file);
+    g_object_unref(stdout_stream);
     
     exit(0);
 }

@@ -22,7 +22,7 @@ if [[ ! -d $DIR/logs ]]; then
     mkdir $DIR/logs
 fi
 
-$DIR/webradio.out $FIFO_PATH >$DIR/logs/webradio.log 2>&1 &
+$DIR/webradio.out $FIFO_PATH 2>$DIR/logs/webradio.log &
 echo $! > $DIR/webradio.pid
 gst-launch-1.0 filesrc location=$FIFO_PATH ! aacparse ! faad ! audioconvert ! alsasink >logs/gstreamer.log 2>&1 &
 echo $! > $DIR/gstreamer.pid
