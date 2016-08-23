@@ -64,7 +64,7 @@ void signal_handler(int sig)
 }
 
 int main(int argc, char **argv)
-{ 
+{
     int status;
     struct sigaction act;
     bzero(&act, sizeof(struct sigaction));
@@ -81,14 +81,17 @@ int main(int argc, char **argv)
     g_log_set_handler(NULL, G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG | G_LOG_FLAG_RECURSION,
         debug_log_handler, NULL);
 
-    GError *error = NULL;
+    char *stream_url = "http://7659.live.streamtheworld.com:80/977_80AAC_SC";
+    if (argc > 1) stream_url = argv[1];
+
+    g_message("Streaming %s", stream_url);
 
     GOutputStream *stdout_stream; 
     g_debug("opening stdout");
     stdout_stream = g_unix_output_stream_new(1, FALSE);
     if(stdout_stream == NULL)
     {
-        g_critical("couldn't open stdout: %s", error->message);
+        g_critical("couldn't open stdout");
         exit(1);
     }
     g_object_ref_sink(stdout_stream);
@@ -98,12 +101,13 @@ int main(int argc, char **argv)
     g_object_ref_sink(session);
 
     SoupMessage *message;
-    message = soup_message_new("GET", "http://7659.live.streamtheworld.com:80/977_80AAC_SC");
+    message = soup_message_new("GET", stream_url); 
     g_object_ref_sink(message);
     soup_message_headers_append(message->request_headers,
             "icy-metadata", "1");
 
     GInputStream *stream;
+    GError *error = NULL;
     stream = soup_session_send(session, message, NULL, &error);
     if(stream == NULL)
     {
