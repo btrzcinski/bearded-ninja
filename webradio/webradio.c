@@ -34,7 +34,20 @@ void debug_log_handler(const gchar *log_domain,
     const gchar *message,
     gpointer user_data)
 {
-    fprintf(stderr, "** Debug: %s\n", message);
+    const gchar *debug_domains = g_getenv("G_MESSAGES_DEBUG");
+    if (debug_domains == NULL) return;
+
+    /* debug_domains is a list of log_domains to print messages for,
+     * or the special log_domain "all" to print for all domains */
+
+    gchar **debug_domains_list = g_strsplit(debug_domains, " ", 0);
+    if (g_strv_contains((const gchar * const *)debug_domains_list, "all") ||
+        g_strv_contains((const gchar * const *)debug_domains_list, log_domain))
+    {
+        fprintf(stderr, "** Debug: %s\n", message);
+    }
+
+    g_strfreev(debug_domains_list);
 }
 
 static bool exit_requested = false;
