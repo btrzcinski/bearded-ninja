@@ -26,6 +26,4 @@ Follow the build steps included with the project, or open the `.sln` file in Vis
 - countsort - an implementation of the count sort algorithm in C
 - countsortcpp - an implementation of the count sort algorithm in C++, making as much use of rvalue/move semantics as possible
 - fibonacci - a Fibonacci series generator as a C++ template
-- webradio - an ICY stream reader that requests metadata, strips it out of the stream and logs it, and passes the remainder out to a FIFO, for use by a decoder/player like GStreamer
-
 
